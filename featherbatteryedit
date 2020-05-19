@@ -1,0 +1,73 @@
+// Adafruit OLED FeatherWing Battery Example
+#include <Wire.h>
+//#include <Adafruit_GFX.h>
+//#include <Adafruit_SSD1306.h>
+#include <Adafruit_FeatherOLED.h>
+
+#define VBATPIN A13
+#define BUTTON_A 15
+#define BUTTON_B 32
+#define BUTTON_C 14
+
+Adafruit_FeatherOLED oled = Adafruit_FeatherOLED();
+
+// integer variable to hold current counter value
+int count = 0;
+// integer variable to hold screen state; 0=0ff, 1== on
+int state = 0;
+
+void setup()
+{
+  pinMode(BUTTON_A, INPUT_PULLUP);
+  pinMode(BUTTON_B, INPUT_PULLUP);
+  pinMode(BUTTON_C, INPUT_PULLUP);
+  Serial.begin(115200);
+
+  oled.init();
+  oled.setBatteryVisible(true);
+}
+
+void loop()
+{
+  // clear display
+  oled.clearDisplay();
+  oled.display();
+
+  if (!digitalRead(BUTTON_A)) state = 1;
+  if (!digitalRead(BUTTON_B)) state = 0;
+  if (!digitalRead(BUTTON_C)) oled.print("C");
+  delay(10);
+
+  // get the current voltage of the battery from
+  // one of the platform specific functions below
+  float battery = getBatteryVoltage();
+
+  // update the battery icon
+  oled.setBattery(battery);
+  oled.renderBattery();
+
+  // print the count value to the OLED
+  oled.print("count: ");
+  oled.println(count);
+
+  // update the display with the new count
+  if (state == 0) oled.display();
+
+  // increment the counter by 1
+  count++;
+
+  // delay 1 second (1 second == 1000 milliseconds)
+  delay(1000);
+}
+
+
+//feathers esp32
+float getBatteryVoltage() {
+  float measuredvbat = analogRead(VBATPIN);
+
+  measuredvbat *= 2;    // we divided by 2, so multiply back
+  measuredvbat *= 3.8;  // Multiply by 3.3V, our reference voltage, 3.8 seems more accurate???
+  measuredvbat /= 4096; // convert to voltage
+
+  return measuredvbat;
+}

@@ -1,0 +1,109 @@
+#include <BluetoothSerial.h>
+
+//build with "WeMos" "Wifi&Bluetooth Battery" board.
+
+#include "SSD1306Wire.h" // legacy include: `#include "SSD1306.h"`
+
+// Initialize the OLED display using Wire library
+SSD1306Wire  display(0x3c, 5, 4);
+
+
+void printBuffer(void) {
+  // Initialize the log buffer
+  // allocate memory to store 8 lines of text and 30 chars per line.
+  display.setLogBuffer(5, 30);
+
+  // Some test data
+  const char* test[] = {
+    "Hello",
+    "World" ,
+    "----",
+    "Show off",
+    "how",
+    "the log buffer",
+    "is",
+    "working.",
+    "Even",
+    "scrolling is",
+    "working",
+    "ETC CDI DEBUG EXAMPLE"
+  };
+
+  for (uint8_t i = 0; i < 12; i++) {
+    display.clear();
+    // Print to the screen
+    display.println(test[i]);
+    // Draw it to the internal screen buffer
+    display.drawLogBuffer(0, 0);
+    // Display it on the screen
+    display.display();
+    delay(500);
+  }
+}
+
+
+BluetoothSerial SerialBT;
+
+void callback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param) {
+  if (event == ESP_SPP_SRV_OPEN_EVT) {
+    Serial.println("Client Connected");
+    SerialBT.println("you are now connected over BT");
+    digitalWrite(LED_BUILTIN, LOW); //inverted led- ON with connection
+  }
+
+  if (event == ESP_SPP_CLOSE_EVT ) {
+    Serial.println("Client disconnected");
+    digitalWrite(LED_BUILTIN, HIGH); //inverted led- OFF on disconnect
+  }
+}
+
+void setup() {
+  display.init();
+  // display.flipScreenVertically();
+  display.setContrast(255);
+  printBuffer();
+  // delay(1000);
+  display.clear();
+  display.
+  Serial.begin(115200);
+  pinMode (LED_BUILTIN, OUTPUT);//Specify that LED pin is output
+
+  //FLASH LED ON BOOT
+  digitalWrite(LED_BUILTIN, HIGH); //inverted led
+  delay(200);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(200);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(200);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(200);
+  digitalWrite(LED_BUILTIN, HIGH); //inverted led
+  //FLASH LED ON BOOT/
+
+  SerialBT.register_callback(callback);
+
+  if (!SerialBT.begin("NZ32NZ")) { //Bluetooth device name
+    Serial.println("An error occurred initializing Bluetooth");
+  } else {
+    Serial.println("Bluetooth initialized");
+  }
+
+  while (1) {
+
+    if (Serial.available()) {
+      SerialBT.write(Serial.read());
+    }
+    if (SerialBT.available()) {
+      Serial.write(SerialBT.read());
+
+      //serial.readstring();  serial.write()
+      //serial.print is numbers
+    }
+    //delay(20);
+
+  }
+}
+
+void loop() {
+  //Try putting serial code in void setup() to see if that improves the dropping of data
+}
