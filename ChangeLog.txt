@@ -1,2 +1,4 @@
 6/1 CDI data now successfully logs to SD card.
     [In order to get the device to transmit to BT and SD simultaneously, a buffer must be used. Those are difficult in C, but perhaps possible.]
+
+6/10 Noah are you there
