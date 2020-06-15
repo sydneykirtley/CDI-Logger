@@ -1,3 +1,21 @@
 (Will add more later)
 
 Today I used a reddit post I made 5 months ago to fix a problem I had. Clearly my retention is excellent.
+
+
+
+Documentation/Pinouts/Datasheets
+
+Adafruit-HUZZAH32 ESP32 Feather: https://learn.adafruit.com/adafruit-huzzah32-esp32-feather
+ESP32-WROOM-32 Datasheet: https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf
+ESP32-WROOM-32 Tech Manual: https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_en.pdf
+Espressif ESP32 Forums: https://www.esp32.com/viewforum.php?f=23
+
+Adafruit-Adalogger FeatherWing: https://learn.adafruit.com/adafruit-adalogger-featherwing
+NXP RTC PCF8523 Datasheet: https://www.nxp.com/docs/en/data-sheet/PCF8523.pdf
+NXP RTC PCF8523 User Manual: https://www.nxp.com/docs/en/user-guide/UM10301.pdf
+NXP RTC PCF8523 and I2C bus info: https://www.nxp.com/docs/en/user-guide/UM10760.pdf
+NXP RTC PCF8523 Temperature drift: https://www.nxp.com/docs/en/application-note/AN11247.pdf
+
+Adafruit-OLED FeatherWing: https://learn.adafruit.com/adafruit-oled-featherwing
+OLED SSD1306 Datasheet: https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf
