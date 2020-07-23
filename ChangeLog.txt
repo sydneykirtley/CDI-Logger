@@ -6,3 +6,5 @@
 6/15 Noah Is Here, I hope... is this how I github?
 
 7/21 I just noticed that! How cute of github. You made it to the changelog!
+
+7/23 Added preceding 0 to single digit times. Removed println from datetime. 

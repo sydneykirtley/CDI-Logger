@@ -64,7 +64,6 @@ void loop (){
       logfile.print(Serial1.readString());
       //SerialBT.write(Serial1.read()); //if there is data available over CDI, write it to the Bluetooth monitor
     }
-      
     logfile.flush();
   }
 }
