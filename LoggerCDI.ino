@@ -52,16 +52,22 @@ void setup() {
 
 void loop (){
   while(1){
-      DateTime now = rtc.now();
-    if (Serial1.available()) {
-        logfile.print(now.year(), DEC); logfile.print('/'); logfile.print(now.month(), DEC); logfile.print('/'); logfile.print(now.day(), DEC);logfile.print(" - ");logfile.print(now.hour(), DEC); logfile.print(':'); logfile.print(now.minute(), DEC); logfile.print(':'); logfile.println(now.second(), DEC);
-        logfile.println(Serial1.readString());
-        //SerialBT.write(Serial1.read()); //if there is data available over CDI, write it to the Bluetooth monitor
-      }
-    logfile.flush();
     DateTime now = rtc.now();
+    char dateBuffer[12];
+
+    if (Serial1.available()) {
+     sprintf(dateBuffer,"%04u/%02u/%02u ", now.year(),now.month(),now.day());
+        logfile.print("["); logfile.print(dateBuffer);
+
+      sprintf(dateBuffer,"%02u:%02u:%02u", now.hour(),now.minute(),now.second());
+        logfile.print(dateBuffer); logfile.print("]");
+      logfile.print(Serial1.readString());
+      //SerialBT.write(Serial1.read()); //if there is data available over CDI, write it to the Bluetooth monitor
+    }
+      
+    logfile.flush();
   }
-  }
+}
 
 void callback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param){ //function to check if something is connected to the Bluetooth
   if(event == ESP_SPP_SRV_OPEN_EVT){
